@@ -41,32 +41,64 @@ def create_new():
     print("That concludes the 2025 NBA Expansion Draft!")
     return df,team_name,pg,sg,sf,pf,c
 
-def season(df):
-    team_overall = df.iloc[-1]['PG'] + df.iloc[-1]['SG'] + df.iloc[-1]['SF'] + df.iloc[-1]['PF'] + df.iloc[-1]['C']
+def offseason():
+    print("f")
+
+def playoffs(new_row,seed, team_overall):
+    print(f"Welcome to the {new_row['Year']} playoffs")
+    new_row['First Round'] = 1
+    print("Welcome to the first round")
+
+
+def season(df,pg,sg,sf,pf,c):
+    new_row = {
+        'Year': df.iloc[-1]['Year'] + 1,
+        'Games Won': 0,
+        'Games Lost': 0,
+        'First Round': 0,
+        'Confrence Semi Finals': 0,
+        'Confrence Finals': 0,
+        'NBA Finals': 0,
+        'Champions': 0,
+        'PG': pg,
+        'SG': sg,
+        'SF': sf,
+        'PF': pf,
+        'C': c}
+    
+    team_overall = new_row['PG'] + new_row['SG'] + new_row['PF'] + new_row['SF'] + new_row['C']
+    
 
     for i in range(1,82):
         opponent_overall = random.randint(5,50)
         if team_overall > opponent_overall:
             print(f"Congrats you won the game {i}!")
-            df.iloc[-1]['Games Won'] = df.iloc[-1]['Games Won'] + 1
+            new_row['Games Won'] = new_row['Games Won'] + 1
         else:
             print(f"Sorry you lost game {i}")
-            df.iloc[-1]['Games Lost'] = df.iloc[-1]['Games Lost'] + 1
+            new_row['Games Lost'] = new_row['Games Lost'] + 1
     
-    Percentage = df.iloc[-1]['Games Won'] / 82
+    Percentage = new_row['Games Won'] / 82
+    print(f" You won {new_row['Games Won']} and lost {new_row['Games Lost']}")
 
     if Percentage > 0.80:
         seed = random.randint(1,2)
         print(f"Congrats you've made the playoffs as a {seed} seed")
+        playoffs(new_row,seed, team_overall)
     elif Percentage > 0.60:
         seed = random.randint(3,6)
         print(f"Congrats you've made the playoffs as a {seed} seed")
+        playoffs(new_row,seed, team_overall)
     elif Percentage > 0.50:
         seed = random.randint(7,8)
         print(f"Congrats you've made the playoffs as a {seed} seed")
+        playoffs(new_row,seed, team_overall)
     else:
         print("You missed the playoffs!")
-        return df
+        offseason()
+        
+    df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+    return df
 
 def main():
     choose_team = int(input("Welcome to the NBA!\n 1. Load Existing Team\n 2. Create Expansion Team\n"))
@@ -78,8 +110,7 @@ def main():
     while True:
         choose_mode = int(input("Do you want to:\n 1. Play a season\n 2. View Stats\n 3. Exit\n"))
         if choose_mode == 1:
-            season(df)
-            print("Let's Play")
+            df = season(df,pg,sg,sf,pf,c)
         elif choose_mode == 2:
             print(df[['Year','Games Won', 'Games Lost', 'First Round', 'Confrence Semi-Finals', 'Confrence Finals','NBA Finals', 
                       'Champions' ]])
