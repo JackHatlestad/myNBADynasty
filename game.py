@@ -18,37 +18,63 @@ def create_new():
                                                                 'NBA Finals', 'Champions', 'PG', 'SG', 'SF', 'PF', 'C'])
     print(f"Welcome {team_name}! Now it's time for the 2025 NBA Expansion Draft!")
     time.sleep(5)
-    pg = random.randint(1,10)
+    pg = random.randint(1,6)
     df.at[0, 'PG'] = pg
     print(f"In the first round of the 2025 NBA Expansion Draft the {team_name} select a {pg} overall Point Guard!")
     time.sleep(5)
-    sg = random.randint(1,10)
+    sg = random.randint(1,6)
     df.at[0, 'SG'] = sg
     print(f"In the first round of the 2025 NBA Expansion Draft the {team_name} select a {sg} overall Shooting Guard!")
     time.sleep(5)
-    sf = random.randint(1,10)
+    sf = random.randint(1,6)
     df.at[0, 'SF'] = sf
     print(f"In the first round of the 2025 NBA Expansion Draft the {team_name} select a {sf} overall Small Forward!")
     time.sleep(5)
-    pf = random.randint(1,10)
+    pf = random.randint(1,6)
     df.at[0, 'PF'] = pg
     print(f"In the first round of the 2025 NBA Expansion Draft the {team_name} select a {pf} overall Power Forward")
     time.sleep(5)
-    c = random.randint(1,10)
+    c = random.randint(1,6)
     df.at[0, 'C'] = c
     print(f"In the first round of the 2025 NBA Expansion Draft the {team_name} select a {c} overall Center!")
     time.sleep(5)
     print("That concludes the 2025 NBA Expansion Draft!")
     return df,team_name,pg,sg,sf,pf,c
 
-def offseason():
-    print("f")
+def offseason(df):
+    last_row = df.iloc[-1]
+    pg, sg, sf, pf, c = last_row['PG'], last_row['SG'], last_row['SF'], last_row['PF'], last_row['C']
+    print(f"Welcome to the {last_row['Year']} Offseaon!")
+    time.sleep(1)
+    print(f"Your current roster: \n 1. PG: {pg}\n2. SG: {sg}\n 3. SF: {sf}\n 4. PF: {pf} \n 5. C : {c}")
+    time.sleep(1)
+    draft_choice = input("Welcome to the NBA Draft! What position do you want to draft?")
+    new_value = random.randint(1, 10)
+    
+    if draft_choice.lower() == 'pg':
+        print(f"You drafted a {new_value} overall PG")
+        pg = new_value
+    elif draft_choice.lower() == 'sg':
+        print(f"You drafted a {new_value} overall SG")
+        sg = new_value
+    elif draft_choice.lower() == 'sf':
+        print(f"You drafted a {new_value} overall SF")
+        sf = new_value
+    elif draft_choice.lower() == 'pf':
+        print(f"You drafted a {new_value} overall PF")
+        pf = new_value
+    elif draft_choice.lower() == 'c':
+        print(f"You drafted a {new_value} overall C")
+        c = new_value
+    else:
+        print("Invalid choice. No upgrade this offseason.")
+
+    return pg, sg, sf, pf, c
 
 def playoffs(new_row,seed, team_overall):
     print(f"Welcome to the {new_row['Year']} playoffs")
     new_row['First Round'] = 1
     print("Welcome to the first round")
-
 
 def season(df,pg,sg,sf,pf,c):
     new_row = {
@@ -95,7 +121,6 @@ def season(df,pg,sg,sf,pf,c):
         playoffs(new_row,seed, team_overall)
     else:
         print("You missed the playoffs!")
-        offseason()
         
     df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
     return df
@@ -111,9 +136,10 @@ def main():
         choose_mode = int(input("Do you want to:\n 1. Play a season\n 2. View Stats\n 3. Exit\n"))
         if choose_mode == 1:
             df = season(df,pg,sg,sf,pf,c)
+            pg,sg,sf,pf,c =  offseason(df)
         elif choose_mode == 2:
             print(df[['Year','Games Won', 'Games Lost', 'First Round', 'Confrence Semi-Finals', 'Confrence Finals','NBA Finals', 
-                      'Champions' ]])
+                      'Champions']])
         elif choose_mode == 3:
             print("Thanks for playing!")
             break
