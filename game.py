@@ -68,16 +68,16 @@ def offseason(df):
         print(f"You drafted a {new_value} overall C\n")
         c = new_value
     else:
-        print("Invalid choice. No upgrade this offseason.\n")
+        print("No players drafted this season\n")
     time.sleep(3)
     print("Welcome to NBA Free Agency")
     time.sleep(3)
-    chance = random.randint(1,5)
-    pg_chance = random.randint(1,5)
-    sg_chance = random.randint(1,5)
-    pf_chance = random.randint(1,5)
-    sf_chance = random.randint(1,5)
-    c_chance = random.randint(1,5)
+    chance = random.randint(1,3)
+    pg_chance = random.randint(1,3)
+    sg_chance = random.randint(1,3)
+    pf_chance = random.randint(1,3)
+    sf_chance = random.randint(1,3)
+    c_chance = random.randint(1,3)
     if chance == pg_chance:
         time.sleep(3)
         print("Sorry your Point Guard Left in Free Agency!")
@@ -182,7 +182,6 @@ def NBA_Finals(new_row):
     computer_wins = 0
 
     while True:
-        time.sleep(3)
         computer_choice = random.randint(0,2)
         player_choice = input("What is your choice?\n")
 
@@ -345,7 +344,7 @@ def season(df,pg,sg,sf,pf,c):
     
     time.sleep(3)
     for i in range(1,83):
-        opponent_overall = random.randint(5,50)
+        opponent_overall = random.randint(15,50)
         if team_overall > opponent_overall:
             new_row['Games Won'] = new_row['Games Won'] + 1
         else:
