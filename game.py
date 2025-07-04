@@ -7,9 +7,14 @@ def load_existing():
 
     try:
         df = pd.read_excel(f"{team_name}.xlsx")
+        pg = df.iloc[-1]['PG']
+        sg = df.iloc[-1]['SG']
+        pf = df.iloc[-1]['PF']
+        sf = df.iloc[-1]['SF']
+        c = df.iloc[-1]['C']
     except FileNotFoundError:
         print("Error Can't Find Team")
-    return df, team_name
+    return df, team_name, pg, sg, sf, pf, c
 
 def create_new():
     team_name = input("What is your team name?\n")
@@ -343,7 +348,63 @@ def season(df,pg,sg,sf,pf,c):
     team_overall = new_row['PG'] + new_row['SG'] + new_row['PF'] + new_row['SF'] + new_row['C']
     
     time.sleep(3)
-    for i in range(1,83):
+    for i in range(1,42):
+        opponent_overall = random.randint(15,50)
+        if team_overall > opponent_overall:
+            new_row['Games Won'] = new_row['Games Won'] + 1
+        else:
+            new_row['Games Lost'] = new_row['Games Lost'] + 1
+
+    print(f"Welcome to the NBA Trade Deadline! Halfway through the seasom your record is {new_row['Games Won']}:{new_row['Games Lost']}")
+    trade_prob = random.randint(1,3)
+    trade_prob_yes = random.randint(1,3)
+    trade_pos = random.randint(1,5)
+    trade_overall = random.randint(1,10)
+    if trade_prob == trade_prob_yes:
+        if trade_pos == 1:
+            trade = int(input("A Team wants to trade a PG with you.\n 1. Accept Trade \n 2. Decline Trade"))
+            if trade == 1:
+                print(f"Congrats on the new {trade_overall} overall PG")
+                pg = trade_overall 
+            else:
+                print(f"You declined the trade for a {trade_overall} overall PG")  
+        elif trade_pos == 2:
+            trade = int(input("A Team wants to trade a SG with you.\n 1. Accept Trade \n 2. Decline Trade"))
+            if trade == 1:
+                print(f"Congrats on the new {trade_overall} overall SG")
+                sg = trade_overall 
+            else:
+                print(f"You declined the trade for a {trade_overall} overall SG")  
+        
+        elif trade_pos == 3:
+            trade = int(input("A Team wants to trade a SF with you.\n 1. Accept Trade \n 2. Decline Trade"))
+            if trade == 1:
+                print(f"Congrats on the new {trade_overall} overall SF")
+                sf = trade_overall 
+            else:
+                print(f"You declined the trade for a {trade_overall} overall SF")  
+
+        elif trade_pos == 4:
+            trade = int(input("A Team wants to trade a PF with you.\n 1. Accept Trade \n 2. Decline Trade"))
+            if trade == 1:
+                print(f"Congrats on the new {trade_overall} overall PF")
+                pf = trade_overall 
+            else:
+                print(f"You declined the trade for a {trade_overall} overall PF")  
+
+        else:
+            trade = int(input("A Team wants to trade a C with you.\n 1. Accept Trade \n 2. Decline Trade"))
+            if trade == 1:
+                print(f"Congrats on the new {trade_overall} overall C")
+                c = trade_overall 
+            else:
+                print(f"You declined the trade for a {trade_overall} overall C")  
+    else:
+        print("No Team wants to trade with you")
+    
+    time.sleep(2)
+
+    for i in range(1,42):
         opponent_overall = random.randint(15,50)
         if team_overall > opponent_overall:
             new_row['Games Won'] = new_row['Games Won'] + 1
@@ -374,7 +435,7 @@ def season(df,pg,sg,sf,pf,c):
 def main():
     choose_team = int(input("Welcome to the NBA!\n 1. Load Existing Team\n 2. Create Expansion Team\n"))
     if choose_team == 1:
-        df,team_name = load_existing()
+        df,team_name,pg,sg,sf,pf,c = load_existing()
     elif choose_team == 2:
         df,team_name,pg,sg,sf,pf,c = create_new()
     
