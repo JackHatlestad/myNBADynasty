@@ -402,7 +402,7 @@ def season(df,pg,sg,sf,pf,c):
     else:
         print("No Team wants to trade with you")
     
-    time.sleep(2)
+    time.sleep(3)
 
     for i in range(1,42):
         opponent_overall = random.randint(15,50)
